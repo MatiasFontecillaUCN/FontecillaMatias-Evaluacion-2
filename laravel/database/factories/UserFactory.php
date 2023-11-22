@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'price' => rand(100, 1000),
             'summary' => Str::random(50),
+            'img_url' => $this->faker->imageUrl(),
             'created_at' => $this->faker->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
         ];
     }

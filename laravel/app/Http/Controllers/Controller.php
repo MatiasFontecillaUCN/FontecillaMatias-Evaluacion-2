@@ -7,80 +7,89 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\producto;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    //Route::get('users', [UserController::class, 'index']);
+    //Route::get('producto', [UserController::class, 'index']);
     public function index()
      {
         //GET ALL
          try {
+            return response()->json(producto::get(), 200);
          } catch (\Exception $exception) {
              return response()->json(['error' => $exception->getMessage()]);
          }
      }
 
-    //Route::post('user',[Controller::class,'store']);
+    //Route::post('producto',[Controller::class,'store']);
      public function store(Request $request)
      {
         //CREATE
          $fields = $request->validate(([
              'name' => 'required',
-             'email' => 'required|email',
-             'password' => 'required',
-         ]));
+             'price' => 'required|integer',
+             'summary' => 'required',
+             'img_url'=>'required',
+            ]));
 
+            // return response()->json('------------------------');
          try {
              DB::beginTransaction();
-             $user = User::create([
+             $producto = producto::create([
                  'name' => $fields['name'],
-                 'email' => $fields['email'],
-                 'password' => $fields['password'],
+                 'price' => $fields['price'],
+                 'summary' => $fields['summary'],
+                 'img_url'=>$fields['img_url'],
+
              ]);
              DB::commit();
-             return response()->json($user);
+             return response()->json($producto);
          } catch (\Exception $exception) {
              DB::rollBack();
              return response()->json(['error' => $exception->getMessage()]);
          }
      }
 
-    //Route::put('user/{id}',[Controller::class,'update']);
+    //Route::put('producto/{id}',[Controller::class,'update']);
     public function update(Request $request, $id)
      {
         //UPDATE
          $fields = $request->validate(([
-             'name' => 'required',
-             'email' => 'required|email',
+            'name' => 'required',
+            'price' => 'required|integer',
+            'summary' => 'required',
+             'img_url'=>'required',
          ]));
 
          try {
              DB::beginTransaction();
-             $user = User::find($id);
-             $user->update([
-                 'name' => $fields['name'],
-                 'email' => $fields['email'],
+             $producto = producto::find($id);
+             $producto->update([
+                'name' => $fields['name'],
+                'price' => $fields['price'],
+                'summary' => $fields['summary'],
+                'img_url'=>$fields['img_url'],
              ]);
              DB::commit();
-             return response()->json($user);
+             return response()->json($producto);
          } catch (\Exception $exception) {
              DB::rollBack();
              return response()->json(['error' => $exception->getMessage()]);
          }
      }
 
-    //Route::delete('user/{id}',[Controller::class,'destroy']);
+    //Route::delete('producto/{id}',[Controller::class,'destroy']);
     public function destroy($id)
      {
          try {
              DB::beginTransaction();
-             $user = User::find($id);
-             $user->delete();
+             $producto = producto::find($id);
+             $producto->delete();
              DB::commit();
-             return response()->json($user);
+             return response()->json($producto);
          } catch (\Exception $exception) {
              DB::rollBack();
              return response()->json(['error' => $exception->getMessage()]);

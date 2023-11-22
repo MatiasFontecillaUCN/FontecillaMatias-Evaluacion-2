@@ -1,16 +1,8 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 axios.defaults.baseURL = "http://localhost:8000/api";
-axios.defaults.withCredentials = true;
 
 const responseBody = (response) => response.data;
-
-axios.interceptors.request.use((config) => {
-  const token = Cookies.get("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
 
 const requests = {
   get: (url) => axios.get(url).then(responseBody),
@@ -20,7 +12,11 @@ const requests = {
 };
 
 const endpoints = {
-  test: (name, password) => requests.post("/Auth/login", { name, password }),
+  create: (name,price,summary,img_url) => requests.post("/producto",{name,price,summary,img_url}),
+  read: () => requests.get("/producto"),
+  update: (id,name,price,summary,img_url) => requests.put("/producto/"+id,{name,price,summary,img_url}),
+  delete: (id) => requests.delete("/producto/"+id),
+  
 };
 
 const agent = { endpoints };

@@ -13,5 +13,6 @@ class producto extends Model
         'name',
         'price',
         'summary',
+        'img_url',
     ];
 }

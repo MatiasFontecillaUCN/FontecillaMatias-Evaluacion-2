@@ -19,6 +19,7 @@ class productoFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'price' => rand(100, 1000),
+            'img_url' => $this->faker->imageUrl(),
             'summary' => Str::random(50),
             'created_at' => $this->faker->dateTimeBetween('-1 years', 'now')->format('Y-m-d H:i:s'),
         ];
